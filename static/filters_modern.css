@@ -1,0 +1,233 @@
+/* ===================================================
+   SIDEBAR FILTERS - CLEAN & SCOPED STYLING
+   Only affects filters in the sidebar - no bleeding
+   ================================================= */
+
+/* ===== SIDEBAR-ONLY CAIXA GOLD TAGS ===== */
+
+/* Sidebar multiselect tags only - Override theme with CAIXA gold */
+section[data-testid="stSidebar"] span[data-baseweb="tag"],
+section[data-testid="stSidebar"] div[data-baseweb="tag"] {
+    background: #FFD700 !important; /* CAIXA gold */
+    color: #1a202c !important; /* Dark navy text for contrast */
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    padding: 5px 12px !important;
+    border: 1px solid rgba(26, 32, 44, 0.2) !important;
+    text-shadow: none !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Sidebar tag hover effects */
+section[data-testid="stSidebar"] span[data-baseweb="tag"]:hover,
+section[data-testid="stSidebar"] div[data-baseweb="tag"]:hover {
+    background: #E6C200 !important; /* Darker gold on hover */
+    color: #1a202c !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Sidebar tag close button */
+section[data-testid="stSidebar"] div[data-baseweb="tag"] span[role="button"] {
+    background: rgba(26, 32, 44, 0.15) !important;
+    color: #1a202c !important;
+    border-radius: 50% !important;
+    width: 16px !important;
+    height: 16px !important;
+    margin-left: 6px !important;
+    font-weight: bold !important;
+    transition: all 0.2s ease !important;
+}
+
+section[data-testid="stSidebar"] div[data-baseweb="tag"] span[role="button"]:hover {
+    background: #1a202c !important;
+    color: #FFD700 !important;
+    transform: scale(1.1) !important;
+}
+
+/* CSS Variables for easy theme switching */
+:root {
+    --filter-bg-primary: #1a365d;
+    --filter-bg-secondary: #2d3748;
+    --filter-text: #ffffff;
+    --filter-border: #FFD700;
+    --filter-shadow: rgba(0, 0, 0, 0.3);
+    --filter-hover-shadow: rgba(255, 215, 0, 0.2);
+}
+
+/* ===== SIDEBAR-ONLY MULTISELECT STYLING ===== */
+
+/* Multiselect container - SIDEBAR ONLY */
+section[data-testid="stSidebar"] .stMultiSelect {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(148, 163, 184, 0.2) !important;
+    backdrop-filter: blur(10px) !important;
+    transition: all 0.3s ease !important;
+}
+
+section[data-testid="stSidebar"] .stMultiSelect:hover {
+    border-color: var(--filter-border) !important;
+    box-shadow: 0 4px 20px var(--filter-hover-shadow) !important;
+}
+
+/* Multiselect input field - SIDEBAR ONLY */
+section[data-testid="stSidebar"] .stMultiSelect > div > div > div {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(148, 163, 184, 0.3) !important;
+    border-radius: 10px !important;
+    color: white !important;
+}
+
+/* Selected tag styling - SIDEBAR ONLY */
+section[data-testid="stSidebar"] div[data-baseweb="tag"] {
+    background: linear-gradient(135deg, var(--filter-bg-primary) 0%, var(--filter-bg-secondary) 100%) !important;
+    color: var(--filter-text) !important;
+    border: 2px solid var(--filter-border) !important;
+    border-radius: 10px !important;
+    padding: 5px 12px !important;
+    margin: 2px !important;
+    font-weight: 600 !important;
+    font-size: 0.8rem !important;
+    box-shadow: 0 2px 6px var(--filter-shadow) !important;
+    transition: all 0.2s ease !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* Tag hover effect - SIDEBAR ONLY */
+section[data-testid="stSidebar"] div[data-baseweb="tag"]:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 3px 8px var(--filter-shadow), 0 1px 4px var(--filter-hover-shadow) !important;
+    border-color: var(--filter-border) !important;
+    background: linear-gradient(135deg, var(--filter-bg-secondary) 0%, #4a5568 100%) !important;
+}
+
+/* Close button - SIDEBAR ONLY */
+section[data-testid="stSidebar"] div[data-baseweb="tag"] span[role="button"] {
+    background: rgba(255, 215, 0, 0.2) !important;
+    color: var(--filter-border) !important;
+    border-radius: 50% !important;
+    width: 16px !important;
+    height: 16px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin-left: 6px !important;
+    font-weight: bold !important;
+    transition: all 0.2s ease !important;
+    font-size: 12px !important;
+}
+
+/* Close button hover - SIDEBAR ONLY */
+section[data-testid="stSidebar"] div[data-baseweb="tag"] span[role="button"]:hover {
+    background: var(--filter-border) !important;
+    color: var(--filter-bg-primary) !important;
+    transform: scale(1.1) !important;
+}
+
+/* ===== SIDEBAR-ONLY SELECTBOX STYLING ===== */
+
+section[data-testid="stSidebar"] .stSelectbox {
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-radius: 12px !important;
+    border: 1px solid rgba(148, 163, 184, 0.2) !important;
+    backdrop-filter: blur(10px) !important;
+    transition: all 0.3s ease !important;
+}
+
+section[data-testid="stSidebar"] .stSelectbox:hover {
+    border-color: rgba(148, 163, 184, 0.4) !important;
+    box-shadow: 0 4px 20px rgba(71, 85, 105, 0.1) !important;
+}
+
+section[data-testid="stSidebar"] .stSelectbox > div > div {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(148, 163, 184, 0.3) !important;
+    border-radius: 10px !important;
+    color: white !important;
+}
+
+/* ===== SIDEBAR-ONLY INPUT STYLING ===== */
+
+section[data-testid="stSidebar"] .stTextInput > div > div > input,
+section[data-testid="stSidebar"] .stNumberInput > div > div > input {
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: 1px solid rgba(148, 163, 184, 0.3) !important;
+    border-radius: 10px !important;
+    color: white !important;
+    transition: all 0.3s ease !important;
+}
+
+section[data-testid="stSidebar"] .stTextInput > div > div > input:focus,
+section[data-testid="stSidebar"] .stNumberInput > div > div > input:focus {
+    border-color: var(--filter-border) !important;
+    box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2) !important;
+}
+
+/* ===== SIDEBAR-ONLY SLIDER STYLING ===== */
+
+section[data-testid="stSidebar"] .stSlider > div > div > div > div {
+    background: linear-gradient(135deg, var(--filter-bg-primary) 0%, var(--filter-bg-secondary) 100%) !important;
+}
+
+section[data-testid="stSidebar"] .stSlider > div > div > div[role="slider"] {
+    background: var(--filter-border) !important;
+    border: 2px solid var(--filter-bg-primary) !important;
+    box-shadow: 0 2px 8px var(--filter-shadow) !important;
+}
+
+/* ===== DROPDOWN MENU STYLING ===== */
+
+section[data-testid="stSidebar"] .stMultiSelect > div > div[role="listbox"] {
+    background: rgba(255, 255, 255, 0.95) !important;
+    border: 1px solid rgba(148, 163, 184, 0.4) !important;
+    border-radius: 12px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3) !important;
+    backdrop-filter: blur(15px) !important;
+}
+
+section[data-testid="stSidebar"] .stMultiSelect > div > div[role="listbox"] > div {
+    color: #1a1a1a !important;
+    padding: 8px 16px !important;
+    border-radius: 8px !important;
+    margin: 2px 4px !important;
+    transition: all 0.2s ease !important;
+}
+
+section[data-testid="stSidebar"] .stMultiSelect > div > div[role="listbox"] > div:hover {
+    background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%) !important;
+    color: #334155 !important;
+}
+
+/* ===== LABELS AND HELP TEXT ===== */
+
+section[data-testid="stSidebar"] label {
+    color: #1F3B75 !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+    margin-bottom: 8px !important;
+}
+
+section[data-testid="stSidebar"] .stMultiSelect + div,
+section[data-testid="stSidebar"] .stSelectbox + div {
+    color: rgba(255, 255, 255, 0.8) !important;
+    font-size: 0.8rem !important;
+    font-style: italic !important;
+    margin-top: 4px !important;
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+@media (max-width: 768px) {
+    section[data-testid="stSidebar"] div[data-baseweb="tag"] {
+        font-size: 0.75rem !important;
+        padding: 4px 10px !important;
+    }
+    
+    section[data-testid="stSidebar"] div[data-baseweb="tag"] span[role="button"] {
+        width: 14px !important;
+        height: 14px !important;
+        font-size: 10px !important;
+    }
+}

@@ -1,0 +1,7 @@
+[theme]
+base = "dark"
+primaryColor = "#0052CC"           # CAIXA blue for main content
+backgroundColor = "#0066cc"        # CAIXA blue background
+secondaryBackgroundColor = "#004499" # Darker CAIXA blue for sidebar
+textColor = "#FFFFFF"              # White text
+font = "sans serif"

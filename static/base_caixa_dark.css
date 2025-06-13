@@ -1,0 +1,299 @@
+/* ===================================================
+   CAIXA DARK THEME - BASE STYLING
+   Professional CAIXA-branded dashboard styling
+   ================================================= */
+
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ========================================
+   GLOBAL STYLING - CAIXA THEME
+======================================== */
+
+/* Main App Background - CAIXA Blue Gradient */
+.stApp {
+    background: linear-gradient(135deg, #0066cc 0%, #004499 100%) !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+    color: white !important;
+    min-height: 100vh;
+}
+
+/* Main Content Area */
+.main { 
+    background: linear-gradient(135deg, #0066cc 0%, #004499 100%) !important; 
+    color: white !important;
+    padding-left: 2rem !important;
+    padding-right: 2rem !important;
+}
+
+/* Block Container - Ensure white text throughout */
+.block-container {
+    background: transparent !important;
+    color: white !important;
+    max-width: 1400px !important;
+}
+
+/* All main content text must be white */
+.main p, .main div, .main span, .main h1, .main h2, .main h3, .main h4, .main h5, .main h6 {
+    color: white !important;
+}
+
+/* ========================================
+   SIDEBAR STYLING
+======================================== */
+
+section[data-testid="stSidebar"] {
+    background-color: #F7F9FC !important;
+    border-right: 3px solid #FFD700 !important;
+}
+
+section[data-testid="stSidebar"] *,
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] div,
+section[data-testid="stSidebar"] span,
+section[data-testid="stSidebar"] label {
+    color: #1F3B75 !important;
+    font-weight: 600 !important;
+}
+
+/* ========================================
+   HEADER STYLING
+======================================== */
+
+.main-header {
+    background: linear-gradient(135deg, #0066cc 0%, #004499 50%, #002975 100%) !important;
+    padding: 2rem !important;
+    border-radius: 20px !important;
+    color: white !important;
+    text-align: center !important;
+    margin-bottom: 2rem !important;
+    border: 3px solid #FFD700 !important;
+    box-shadow: 0 15px 50px rgba(0, 102, 204, 0.4) !important;
+}
+
+.main-header h1 {
+    font-size: 2.8rem !important;
+    font-weight: 700 !important;
+    margin-bottom: 1rem !important;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5) !important;
+    background: linear-gradient(45deg, #FFD700, #FFF) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+/* ========================================
+   METRIC CARDS
+======================================== */
+
+.metric-card {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.08) 100%) !important;
+    backdrop-filter: blur(15px) !important;
+    padding: 1.5rem !important;
+    border-radius: 20px !important;
+    border: 2px solid rgba(255, 215, 0, 0.5) !important;
+    margin: 1rem !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.3s ease !important;
+    color: white !important;
+    animation: fadeInUp 0.6s ease-out !important;
+}
+
+.metric-card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 20px 40px rgba(255, 215, 0, 0.3) !important;
+    border-color: #FFD700 !important;
+}
+
+.metric-card.highlight {
+    animation: pulse 2s infinite !important;
+}
+
+.kpi-number {
+    font-size: 3rem !important;
+    font-weight: 800 !important;
+    color: #FFD700 !important;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8) !important;
+    margin: 0.5rem 0 !important;
+    line-height: 1.2 !important;
+}
+
+.kpi-label {
+    font-size: 0.9rem !important;
+    color: rgba(255, 255, 255, 0.95) !important;
+    font-weight: 500 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+/* ========================================
+   TABS STYLING
+======================================== */
+
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px !important;
+    background: rgba(0, 0, 0, 0.2) !important;
+    padding: 8px !important;
+    border-radius: 15px !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+}
+
+.stTabs [data-baseweb="tab"] {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px !important;
+    padding: 12px 24px !important;
+    border: 2px solid transparent !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    color: white !important;
+}
+
+.stTabs [aria-selected="true"] {
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%) !important;
+    color: #003366 !important;
+    border-color: #FFD700 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4) !important;
+    font-weight: bold !important;
+}
+
+/* ========================================
+   BUTTONS
+======================================== */
+
+.stButton > button {
+    background: linear-gradient(135deg, #0066cc 0%, #004499 100%) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 0.75rem 2rem !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(0, 102, 204, 0.4) !important;
+}
+
+.stButton > button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(0, 102, 204, 0.6) !important;
+    background: linear-gradient(135deg, #004499 0%, #002975 100%) !important;
+}
+
+/* ========================================
+   HEADERS AND TYPOGRAPHY
+======================================== */
+
+h1, h2, h3, h4, h5, h6 { 
+    color: #FFD700 !important; 
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8) !important;
+    font-weight: bold !important;
+}
+
+/* ========================================
+   DATA COMPONENTS
+======================================== */
+
+/* DataFrames */
+.stDataFrame {
+    border-radius: 15px !important;
+    overflow: hidden !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3) !important;
+    border: 2px solid rgba(255, 215, 0, 0.4) !important;
+    background: rgba(255, 255, 255, 0.98) !important;
+}
+
+/* Charts */
+.js-plotly-plot {
+    border-radius: 15px !important;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2) !important;
+    overflow: hidden !important;
+    border: 2px solid rgba(255, 215, 0, 0.3) !important;
+    background: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* Slider styling */
+.stSlider {
+    padding: 1rem !important;
+}
+
+/* ========================================
+   ANIMATIONS
+======================================== */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+    50% {
+        box-shadow: 0 15px 40px rgba(255, 215, 0, 0.4);
+    }
+    100% {
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+}
+
+/* ========================================
+   LOADING AND STATUS INDICATORS
+======================================== */
+
+/* Loading spinner customization */
+.stSpinner {
+    color: #FFD700 !important;
+}
+
+/* Success/Error message styling */
+.stAlert {
+    border-radius: 10px !important;
+    border-left: 4px solid #FFD700 !important;
+}
+
+/* ========================================
+   ACCESSIBILITY IMPROVEMENTS
+======================================== */
+
+/* Focus indicators for keyboard navigation */
+button:focus,
+select:focus,
+input:focus {
+    outline: 2px solid #FFD700 !important;
+    outline-offset: 2px !important;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .metric-card {
+        border: 3px solid #FFD700 !important;
+    }
+    
+    .main-header {
+        border: 4px solid #FFD700 !important;
+    }
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+======================================== */
+
+@media (max-width: 768px) {
+    .main-header h1 {
+        font-size: 2rem !important;
+    }
+    
+    .kpi-number {
+        font-size: 2rem !important;
+    }
+    
+    .metric-card {
+        margin: 0.5rem !important;
+        padding: 1rem !important;
+    }
+}
