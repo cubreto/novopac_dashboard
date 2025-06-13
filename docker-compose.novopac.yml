@@ -21,27 +21,27 @@ services:
       - novopac-network
 
   # ---------- Streamlit dashboard (8507) ----------
-  novopac-dashboard:
-    build: .
-    container_name: novopac-dashboard
-    depends_on:
-      novopac-pg:
-        condition: service_healthy
-    ports:
-      - "8507:8507"
-    environment:
-      PGHOST: novopac-pg
-      PGPORT: 5432
-      PGDATABASE: novopac_db
-      PGUSER: novopac_user
-      PGPASSWORD: novopac_pass
-    volumes:
-      - .:/app:ro          # read-only code mount (data stays in PG)
-    mem_limit: 2g
-    restart: unless-stopped
-    networks:
-      - novopac-network
-
+#  novopac-dashboard:
+#    build: .
+#    container_name: novopac-dashboard
+#    depends_on:
+#      novopac-pg:
+#        condition: service_healthy
+#    ports:
+#      - "8507:8507"
+#    environment:
+#      PGHOST: novopac-pg
+#      PGPORT: 5432
+#      PGDATABASE: novopac_db
+#      PGUSER: novopac_user
+#      PGPASSWORD: novopac_pass
+#    volumes:
+#      - .:/app:ro          # read-only code mount (data stays in PG)
+#    mem_limit: 2g
+#    restart: unless-stopped
+#    networks:
+#      - novopac-network
+#
 # ---------- shared resources ----------
 volumes:
   pgdata_novopac:
