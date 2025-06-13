@@ -1,0 +1,67 @@
+version: "3.9"
+
+networks:
+  novopac-network:
+    driver: bridge
+
+volumes:
+  novopac_pgdata: {}
+
+services:
+
+  # ────────────────────────────────────────────────────────────────
+  # PostgreSQL (local only – mirrors the EC2 plan: port 5435)
+  # ────────────────────────────────────────────────────────────────
+  novopac-pg:
+    image: postgres:15-alpine
+    container_name: novopac-pg
+    restart: unless-stopped
+    networks:
+      - novopac-network
+    environment:
+      POSTGRES_DB:     novopac_mcmv
+      POSTGRES_USER:   novopac_user
+      POSTGRES_PASSWORD: supersecret        # ⬅︎ override via .env if you prefer
+    ports:
+      - "5435:5432"
+    volumes:
+      - novopac_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ────────────────────────────────────────────────────────────────
+  # Streamlit dashboard (MVP) – runs on port 8507
+  # ────────────────────────────────────────────────────────────────
+  novopac-dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile            # assumes you’ll add one (see note below)
+    container_name: novopac-dashboard
+    restart: unless-stopped
+    networks:
+      - novopac-network
+    depends_on:
+      novopac-pg:
+        condition: service_healthy
+    command: >
+      streamlit run streamlit_app/novopac_dashboard.py
+      --server.port 8507
+      --server.address 0.0.0.0
+    environment:
+      # DB connection string picked up by SQLAlchemy / psycopg
+      DATABASE_URL: postgres://novopac_user:supersecret@novopac-pg:5432/novopac_mcmv
+      PYTHONUNBUFFERED: "1"
+    volumes:
+      - .:/app
+    ports:
+      - "8507:8507"
+    mem_limit: 2g        # ← extra RAM for NLP / UMAP / large plots
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8507/_stcore/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+

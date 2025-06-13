@@ -1,0 +1,27 @@
+# ── Core dashboard ───────────────────────────
+streamlit
+pandas                >=2.0
+numpy                 >=1.26
+sqlalchemy            >=2.0
+psycopg[binary]       >=3.1
+pydeck
+
+# ── Visualisation ────────────────────────────
+matplotlib            >=3.8
+seaborn               >=0.13
+plotly                >=5.20
+geopandas             >=0.14      # pulls shapely, pyproj wheels – no system GDAL needed
+networkx              >=3.3
+
+# ── NLP & ML ─────────────────────────────────
+nltk                  >=3.8
+scipy                 >=1.12
+scikit-learn          >=1.4
+umap-learn            >=0.5
+# lda / nmf already inside scikit-learn
+
+# ── AWS / I/O ────────────────────────────────
+boto3                 >=1.34
+
+# ── Optional but handy ───────────────────────
+python-dateutil
