@@ -1,7 +1,27 @@
 #!/usr/bin/env python3
 """
-NovoOAC ETL Configuration
+NovoPAC ETL Configuration
 Centralized configuration for the ETL pipeline based on real data characteristics
+
+CRITICAL DATABASE CONNECTION NOTES:
+=====================================
+This config file handles TWO different connection scenarios:
+
+1. LOCAL DEVELOPMENT (NOVOPAC_ENV=local or unset):
+   - ETL runs OUTSIDE Docker containers
+   - Connects to PostgreSQL via Docker port mapping: localhost:5435
+   - Used when running: python etl/novopac_loader.py
+
+2. PRODUCTION/DOCKER (NOVOPAC_ENV=production):
+   - Dashboard runs INSIDE Docker containers
+   - Connects via Docker network hostname: novopac-pg:5432
+   - Used when dashboard container connects to database
+   - DATABASE_URL environment variable MUST be set in docker-compose
+
+CONNECTION STRINGS:
+===================
+- ETL (local):      postgresql+psycopg://novopac_user:novopac_pass@localhost:5435/novopac_db
+- Dashboard (prod): postgresql+psycopg://novopac_user:novopac_pass@novopac-pg:5432/novopac_db
 """
 
 import os
@@ -10,8 +30,15 @@ from typing import Dict, Any
 
 # Database configuration
 DATABASE_CONFIG = {
+    # LOCAL: For ETL running outside Docker (connects via port mapping)
     'local_url': 'postgresql+psycopg://novopac_user:novopac_pass@localhost:5435/novopac_db',
+    
+    # PRODUCTION: For dashboard running inside Docker (connects via network hostname)
+    # This MUST be set via DATABASE_URL environment variable in docker-compose.yml:
+    # DATABASE_URL: postgresql+psycopg://novopac_user:novopac_pass@novopac-pg:5432/novopac_db
     'production_url': os.getenv('DATABASE_URL', ''),
+    
+    # Database settings
     'schema': 'public',  # Start with public schema, can add novopac schema later
     'table_name': 'novopac_ogu_data',
     'connection_pool_size': 5,
@@ -232,7 +259,13 @@ MONITORING_CONFIG = {
 
 # Environment-specific configurations
 def get_config(environment: str = 'local') -> Dict[str, Any]:
-    """Get configuration for specific environment"""
+    """
+    Get configuration for specific environment
+    
+    IMPORTANT: 
+    - 'local' = ETL running outside Docker (localhost:5435)
+    - 'production' = Dashboard running inside Docker (novopac-pg:5432)
+    """
     
     base_config = {
         'database': DATABASE_CONFIG,
@@ -245,14 +278,25 @@ def get_config(environment: str = 'local') -> Dict[str, Any]:
     }
     
     if environment == 'local':
-        # Local development overrides
+        # LOCAL DEVELOPMENT: ETL runs outside Docker
+        # Connects via port mapping: localhost:5435 -> container:5432
         base_config['database']['url'] = DATABASE_CONFIG['local_url']
         base_config['logging']['level'] = 'DEBUG'
         base_config['performance']['chunk_size'] = 250  # Smaller for local testing
         
     elif environment == 'production':
-        # Production overrides
-        base_config['database']['url'] = DATABASE_CONFIG['production_url']
+        # PRODUCTION/DOCKER: Dashboard runs inside Docker
+        # Connects via Docker network: novopac-pg:5432
+        # URL MUST be provided via DATABASE_URL environment variable
+        production_url = DATABASE_CONFIG['production_url']
+        if not production_url:
+            raise ValueError(
+                "DATABASE_URL environment variable must be set for production environment. "
+                "Add this to docker-compose.yml:\n"
+                "  environment:\n"
+                "    DATABASE_URL: postgresql+psycopg://novopac_user:novopac_pass@novopac-pg:5432/novopac_db"
+            )
+        base_config['database']['url'] = production_url
         base_config['logging']['level'] = 'INFO'
         base_config['monitoring']['alert_on_warnings'] = True
         base_config['performance']['chunk_size'] = 1000  # Larger for production
@@ -261,7 +305,13 @@ def get_config(environment: str = 'local') -> Dict[str, Any]:
 
 # Convenience function to get current config
 def get_current_config() -> Dict[str, Any]:
-    """Get configuration for current environment"""
+    """
+    Get configuration for current environment
+    
+    Environment determined by NOVOPAC_ENV environment variable:
+    - NOVOPAC_ENV=local (or unset): Use localhost:5435 for ETL
+    - NOVOPAC_ENV=production: Use novopac-pg:5432 for dashboard
+    """
     environment = os.getenv('NOVOPAC_ENV', 'local')
     return get_config(environment)
 
@@ -270,7 +320,13 @@ ETL_CONFIG = get_current_config()
 
 # Helper functions
 def get_database_url() -> str:
-    """Get database URL for current environment"""
+    """
+    Get database URL for current environment
+    
+    Returns:
+    - Local: postgresql+psycopg://novopac_user:novopac_pass@localhost:5435/novopac_db
+    - Production: postgresql+psycopg://novopac_user:novopac_pass@novopac-pg:5432/novopac_db
+    """
     return ETL_CONFIG['database']['url']
 
 def get_required_columns() -> list:
@@ -298,22 +354,44 @@ def validate_environment():
     
     return True
 
+def debug_connection_info():
+    """Print current connection information for debugging"""
+    env = os.getenv('NOVOPAC_ENV', 'local')
+    database_url = get_database_url()
+    
+    print(f"🔧 Connection Debug Info:")
+    print(f"   Environment: {env}")
+    print(f"   Database URL: {database_url}")
+    print(f"   Table Name: {ETL_CONFIG['database']['table_name']}")
+    
+    if env == 'local':
+        print(f"   📝 ETL Mode: Running outside Docker, connecting via port mapping")
+    else:
+        print(f"   📝 Dashboard Mode: Running inside Docker, connecting via network")
+
 if __name__ == "__main__":
     # Test configuration
-    print("NovoOAC ETL Configuration Test")
-    print("="*40)
+    print("NovoPAC ETL Configuration Test")
+    print("="*50)
     
     try:
+        debug_connection_info()
+        print()
+        
         config = get_current_config()
-        print(f"Environment: {os.getenv('NOVOPAC_ENV', 'local')}")
-        print(f"Database URL: {config['database']['url']}")
-        print(f"Excel file: {config['file']['excel_file']}")
-        print(f"Required columns: {len(config['validation']['required_columns'])}")
-        print(f"Column mappings: {len(config['transformation']['column_mapping'])}")
-        print("✅ Configuration loaded successfully")
+        print(f"✅ Configuration loaded successfully")
+        print(f"   Required columns: {len(config['validation']['required_columns'])}")
+        print(f"   Column mappings: {len(config['transformation']['column_mapping'])}")
         
         validate_environment()
         print("✅ Environment validation passed")
         
     except Exception as e:
         print(f"❌ Configuration error: {e}")
+        
+    print("\n" + "="*50)
+    print("CONNECTION REQUIREMENTS:")
+    print("========================")
+    print("For ETL (local): NOVOPAC_ENV=local or unset")
+    print("For Dashboard (production): NOVOPAC_ENV=production + DATABASE_URL set")
+    print("="*50)

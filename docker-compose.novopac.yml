@@ -1,10 +1,22 @@
+# NovoPAC Dashboard Docker Compose Configuration
+# 
+# CRITICAL CONNECTION INFO:
+# =========================
+# PostgreSQL: novopac-pg:5432 (internal) / localhost:5435 (external)
+# Dashboard: localhost:8507
+# 
+# ENVIRONMENT VARIABLES:
+# =====================
+# NOVOPAC_ENV=production: Forces dashboard to use Docker network connection
+# DATABASE_URL: Full connection string for dashboard container
+#
 services:
-  # ---------- PostgreSQL (5435) ----------
+  # ---------- PostgreSQL Database ----------
   novopac-pg:
     image: postgres:15-alpine
     container_name: novopac-pg
     ports:
-      - "5435:5432"
+      - "5435:5432"  # External:Internal port mapping for ETL access
     environment:
       POSTGRES_DB: novopac_db
       POSTGRES_USER: novopac_user
@@ -20,33 +32,52 @@ services:
     networks:
       - novopac-network
 
-  # ---------- Streamlit dashboard (8507) ----------
-#  novopac-dashboard:
-#    build: .
-#    container_name: novopac-dashboard
-#    depends_on:
-#      novopac-pg:
-#        condition: service_healthy
-#    ports:
-#      - "8507:8507"
-#    environment:
-#      PGHOST: novopac-pg
-#      PGPORT: 5432
-#      PGDATABASE: novopac_db
-#      PGUSER: novopac_user
-#      PGPASSWORD: novopac_pass
-#    volumes:
-#      - .:/app:ro          # read-only code mount (data stays in PG)
-#    mem_limit: 2g
-#    restart: unless-stopped
-#    networks:
-#      - novopac-network
-#
-# ---------- shared resources ----------
+  # ---------- NovoPAC Dashboard ----------
+  novopac-dashboard:
+    build: .
+    container_name: novopac-dashboard
+    depends_on:
+      novopac-pg:
+        condition: service_healthy
+    ports:
+      - "8507:8507"
+    environment:
+      # PostgreSQL connection details (for reference/debugging)
+      PGHOST: novopac-pg
+      PGPORT: 5432
+      PGDATABASE: novopac_db
+      PGUSER: novopac_user
+      PGPASSWORD: novopac_pass
+      
+      # CRITICAL: Environment mode (forces production config)
+      NOVOPAC_ENV: production
+      
+      # CRITICAL: Full database URL for dashboard container
+      # This is what the dashboard actually uses to connect
+      DATABASE_URL: postgresql+psycopg://novopac_user:novopac_pass@novopac-pg:5432/novopac_db
+    volumes:
+      - .:/app
+    command: >
+      streamlit run streamlit_app/novopac_dashboard.py
+      --server.port 8507
+      --server.address 0.0.0.0
+      --server.headless true
+      --server.fileWatcherType none
+    mem_limit: 2g
+    restart: unless-stopped
+    networks:
+      - novopac-network
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8507/_stcore/health || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+# ---------- Shared Resources ----------
 volumes:
   pgdata_novopac:
 
 networks:
   novopac-network:
     driver: bridge
-
