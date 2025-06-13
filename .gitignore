@@ -1,0 +1,15 @@
+data/
+*.xlsx
+*.csv
+*.json
+etl_logs/
+backups/
+*.sql
+*.dump
+.env
+docker-compose.override.yml
+config/secrets.yml
+__pycache__/
+*.pyc
+.venv/
+.vscode/
